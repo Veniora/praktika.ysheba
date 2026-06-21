@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  queue-manager:
+    build: .
+    container_name: queue-manager
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    command: /app/manager -port 8080 -state /app/data/manager/state.json
+    restart: always
+
+  broker-1:
+    build: .
+    container_name: broker-1
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./data:/app/data
+    command: /app/broker -id broker-1 -port 8081 -qm http://queue-manager:8080 -data /app/data/broker -addr http://broker-1:8081
+    depends_on:
+      - queue-manager
+    restart: always
+
+  broker-2:
+    build: .
+    container_name: broker-2
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./data:/app/data
+    command: /app/broker -id broker-2 -port 8082 -qm http://queue-manager:8080 -data /app/data/broker -addr http://broker-2:8082
+    depends_on:
+      - queue-manager
+    restart: always

@@ -1,0 +1,15 @@
+# Local Go installation
+/.go/
+
+# Data directories
+/data/
+
+# Binaries
+/bin/
+/cmd/broker/broker
+/cmd/manager/manager
+/cmd/demo/demo
+
+# Temp / OS files
+.DS_Store
+*.log
